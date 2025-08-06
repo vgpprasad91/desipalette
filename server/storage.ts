@@ -143,55 +143,35 @@ export class MemStorage implements IStorage {
   }
 
   async getProducts(category?: string, search?: string): Promise<Product[]> {
-    // Try Shopify first if credentials are available
-    if (hasShopifyCredentials()) {
-      try {
-        return await shopifyService.getProducts(category, search);
-      } catch (error) {
-        console.log('Shopify fetch failed, falling back to mock data:', error);
-      }
+    if (!hasShopifyCredentials()) {
+      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
     }
     
-    // Fallback to mock data
-    let products = Array.from(this.products.values()).filter(p => p.isActive);
-    
-    if (category) {
-      products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
-    }
-    
-    if (search) {
-      const lowercaseQuery = search.toLowerCase();
-      products = products.filter(p => 
-        p.name.toLowerCase().includes(lowercaseQuery) ||
-        p.description.toLowerCase().includes(lowercaseQuery) ||
-        p.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
-      );
-    }
-    
-    return products;
+    return await shopifyService.getProducts(category, search);
   }
 
   async getProduct(id: string): Promise<Product | undefined> {
-    // Try Shopify first if credentials are available
-    if (hasShopifyCredentials()) {
-      try {
-        const product = await shopifyService.getProduct(id);
-        if (product) return product;
-      } catch (error) {
-        console.log('Shopify product fetch failed, falling back to mock data:', error);
-      }
+    if (!hasShopifyCredentials()) {
+      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
     }
     
-    // Fallback to mock data
-    return this.products.get(id);
+    return await shopifyService.getProduct(id);
   }
 
   async getProductsByCategory(category: string): Promise<Product[]> {
-    return this.getProducts(category);
+    if (!hasShopifyCredentials()) {
+      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
+    }
+    
+    return await shopifyService.getProductsByCategory(category);
   }
 
   async searchProducts(query: string): Promise<Product[]> {
-    return this.getProducts(undefined, query);
+    if (!hasShopifyCredentials()) {
+      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
+    }
+    
+    return await shopifyService.searchProducts(query);
   }
 
   async createProduct(insertProduct: InsertProduct): Promise<Product> {

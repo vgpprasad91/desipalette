@@ -187,12 +187,8 @@ export default function Checkout() {
   const finalTotal = subtotal + shipping + tax;
 
   const onSubmit = (data: CheckoutFormData) => {
-    // Use Shopify checkout if enabled, otherwise use regular order
-    if (shopifyStatus?.shopifyEnabled) {
-      createShopifyCheckoutMutation.mutate(data);
-    } else {
-      createOrderMutation.mutate(data);
-    }
+    // Always use Shopify checkout
+    createShopifyCheckoutMutation.mutate(data);
   };
 
   return (
@@ -207,12 +203,10 @@ export default function Checkout() {
             <div className="flex items-center text-sm text-gray-600">
               <Lock className="h-4 w-4 mr-2" />
               <span>256-bit SSL encrypted checkout</span>
-              {shopifyStatus?.shopifyEnabled && (
-                <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
-                  <ExternalLink className="h-3 w-3 inline mr-1" />
-                  Shopify Powered
-                </span>
-              )}
+              <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+                <ExternalLink className="h-3 w-3 inline mr-1" />
+                Shopify Powered
+              </span>
             </div>
           </div>
           <Link href="/cart">

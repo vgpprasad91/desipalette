@@ -11,12 +11,33 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { data: productsResponse, isLoading } = useQuery({
+  const { data: productsResponse, isLoading, error } = useQuery({
     queryKey: ["/api/products"],
   });
 
   const products = productsResponse?.products || [];
   const featuredProducts = products.slice(0, 6);
+
+  // Show Shopify configuration message if there's an error
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Shopify Configuration Required</h1>
+          <p className="text-gray-600 mb-4">
+            This application requires Shopify credentials to load products. Please configure your Shopify store URL and Storefront API access token.
+          </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left">
+            <h3 className="font-semibold text-yellow-800 mb-2">Required Environment Variables:</h3>
+            <ul className="text-sm text-yellow-700 space-y-1">
+              <li>• SHOPIFY_STORE_URL</li>
+              <li>• SHOPIFY_STOREFRONT_ACCESS_TOKEN</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleQuickView = (product: Product) => {
     setSelectedProduct(product);

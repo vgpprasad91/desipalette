@@ -1,6 +1,6 @@
 # Overview
 
-Desipalette is a modern e-commerce web application for cultural fashion and lifestyle products. Built as a full-stack application with React frontend and Express backend, it features product browsing, shopping cart functionality, and order management. The application integrates with Shopify's Storefront API for headless commerce, allowing product management through Shopify while maintaining a custom frontend experience. When Shopify credentials aren't available, it gracefully falls back to mock data for development and testing.
+Desipalette is a modern e-commerce web application for cultural fashion and lifestyle products. Built as a full-stack application with React frontend and Express backend, it features product browsing, shopping cart functionality, and order management. The application is exclusively powered by Shopify's Storefront API for headless commerce, allowing complete product management through Shopify while maintaining a custom frontend experience. Shopify credentials are required for all functionality.
 
 # User Preferences
 
@@ -19,8 +19,8 @@ Preferred communication style: Simple, everyday language.
 
 ## Backend Architecture
 - **Express.js** server with TypeScript for REST API endpoints
-- **Shopify Storefront API integration** via @shopify/storefront-api-client for headless commerce
-- **Intelligent fallback system** using in-memory storage with seeded product data when Shopify isn't available
+- **Exclusive Shopify Storefront API integration** via @shopify/storefront-api-client for headless commerce
+- **No fallback systems** - requires Shopify credentials for all operations
 - **Drizzle ORM** configured for PostgreSQL with schema definitions but currently unused
 - RESTful API design with endpoints for products, orders, and Shopify checkout
 - Middleware for request logging and error handling
@@ -46,12 +46,12 @@ Preferred communication style: Simple, everyday language.
 - **Replit integration** tools for development environment support
 
 ## Key Features
-- **Shopify headless commerce integration** with automatic fallback to mock data
-- Product catalog with categories, search, and filtering (Shopify-powered when credentials available)
+- **Pure Shopify headless commerce integration** with no fallback systems
+- Product catalog with categories, search, and filtering exclusively from Shopify
 - Shopping cart with persistent state management
 - Product detail views with image galleries and variant selection
-- **Dual checkout system**: Shopify checkout for live stores, internal checkout for development
+- **Shopify-only checkout system** that redirects to Shopify's secure checkout
 - Responsive design optimized for mobile and desktop
-- **Visual indicators** showing data source (Shopify vs Demo mode)
+- **Clear error messaging** when Shopify credentials are not configured
 - Toast notifications for user feedback
 - Modal dialogs for quick product views

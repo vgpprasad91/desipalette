@@ -57,9 +57,25 @@ export default function ProductDetail() {
   if (error || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Product Not Found</h1>
-          <p className="text-gray-600 mb-8">The product you're looking for doesn't exist.</p>
+        <div className="text-center max-w-md mx-auto">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">
+            {error ? 'Shopify Configuration Required' : 'Product Not Found'}
+          </h1>
+          <p className="text-gray-600 mb-4">
+            {error 
+              ? 'This application requires Shopify credentials to load products. Please configure your Shopify store URL and Storefront API access token.'
+              : 'The product you\'re looking for doesn\'t exist in the Shopify store.'
+            }
+          </p>
+          {error && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left mb-4">
+              <h3 className="font-semibold text-yellow-800 mb-2">Required Environment Variables:</h3>
+              <ul className="text-sm text-yellow-700 space-y-1">
+                <li>• SHOPIFY_STORE_URL</li>
+                <li>• SHOPIFY_STOREFRONT_ACCESS_TOKEN</li>
+              </ul>
+            </div>
+          )}
           <Link href="/products">
             <Button data-testid="button-back-to-products">Back to Products</Button>
           </Link>

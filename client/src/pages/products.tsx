@@ -37,8 +37,7 @@ export default function Products() {
 
   // Extract products and metadata from response
   const products = productsResponse?.products || [];
-  const shopifyEnabled = productsResponse?.shopifyEnabled || false;
-  const dataSource = productsResponse?.source || 'unknown';
+  const shopifyEnabled = productsResponse?.shopifyEnabled;
 
   // Sort products
   const sortedProducts = [...products].sort((a, b) => {
@@ -66,9 +65,18 @@ export default function Products() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Products</h1>
-          <p className="text-gray-600">Failed to load products. Please try again later.</p>
+        <div className="text-center max-w-md mx-auto">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Shopify Configuration Required</h1>
+          <p className="text-gray-600 mb-4">
+            This application requires Shopify credentials to load products. Please configure your Shopify store URL and Storefront API access token.
+          </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left">
+            <h3 className="font-semibold text-yellow-800 mb-2">Required Environment Variables:</h3>
+            <ul className="text-sm text-yellow-700 space-y-1">
+              <li>• SHOPIFY_STORE_URL</li>
+              <li>• SHOPIFY_STOREFRONT_ACCESS_TOKEN</li>
+            </ul>
+          </div>
         </div>
       </div>
     );
@@ -87,17 +95,10 @@ export default function Products() {
               <span data-testid="text-products-count">
                 {isLoading ? 'Loading...' : `${sortedProducts.length} products found`}
               </span>
-              {shopifyEnabled && (
-                <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
-                  <ExternalLink className="h-3 w-3 inline mr-1" />
-                  Shopify Powered
-                </span>
-              )}
-              {!shopifyEnabled && (
-                <span className="ml-4 bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
-                  Demo Mode
-                </span>
-              )}
+              <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+                <ExternalLink className="h-3 w-3 inline mr-1" />
+                Shopify Powered
+              </span>
             </div>
           </div>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
