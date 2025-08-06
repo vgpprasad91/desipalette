@@ -1,9 +1,10 @@
 import { type Product, type InsertProduct, type Order, type InsertOrder } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { shopifyService, hasShopifyCredentials } from "./shopify-service";
 
 export interface IStorage {
   // Products
-  getProducts(): Promise<Product[]>;
+  getProducts(category?: string, search?: string): Promise<Product[]>;
   getProduct(id: string): Promise<Product | undefined>;
   getProductsByCategory(category: string): Promise<Product[]>;
   searchProducts(query: string): Promise<Product[]>;
@@ -13,6 +14,9 @@ export interface IStorage {
   // Orders
   createOrder(order: InsertOrder): Promise<Order>;
   getOrder(id: string): Promise<Order | undefined>;
+  
+  // Shopify specific
+  createShopifyCheckout?(order: InsertOrder, cartItems: any[]): Promise<{ checkoutUrl: string; checkoutId: string }>;
 }
 
 export class MemStorage implements IStorage {
@@ -138,29 +142,56 @@ export class MemStorage implements IStorage {
     });
   }
 
-  async getProducts(): Promise<Product[]> {
-    return Array.from(this.products.values()).filter(p => p.isActive);
+  async getProducts(category?: string, search?: string): Promise<Product[]> {
+    // Try Shopify first if credentials are available
+    if (hasShopifyCredentials()) {
+      try {
+        return await shopifyService.getProducts(category, search);
+      } catch (error) {
+        console.log('Shopify fetch failed, falling back to mock data:', error);
+      }
+    }
+    
+    // Fallback to mock data
+    let products = Array.from(this.products.values()).filter(p => p.isActive);
+    
+    if (category) {
+      products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
+    }
+    
+    if (search) {
+      const lowercaseQuery = search.toLowerCase();
+      products = products.filter(p => 
+        p.name.toLowerCase().includes(lowercaseQuery) ||
+        p.description.toLowerCase().includes(lowercaseQuery) ||
+        p.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
+      );
+    }
+    
+    return products;
   }
 
   async getProduct(id: string): Promise<Product | undefined> {
+    // Try Shopify first if credentials are available
+    if (hasShopifyCredentials()) {
+      try {
+        const product = await shopifyService.getProduct(id);
+        if (product) return product;
+      } catch (error) {
+        console.log('Shopify product fetch failed, falling back to mock data:', error);
+      }
+    }
+    
+    // Fallback to mock data
     return this.products.get(id);
   }
 
   async getProductsByCategory(category: string): Promise<Product[]> {
-    return Array.from(this.products.values()).filter(
-      p => p.isActive && p.category.toLowerCase() === category.toLowerCase()
-    );
+    return this.getProducts(category);
   }
 
   async searchProducts(query: string): Promise<Product[]> {
-    const lowercaseQuery = query.toLowerCase();
-    return Array.from(this.products.values()).filter(p => 
-      p.isActive && (
-        p.name.toLowerCase().includes(lowercaseQuery) ||
-        p.description.toLowerCase().includes(lowercaseQuery) ||
-        p.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
-      )
-    );
+    return this.getProducts(undefined, query);
   }
 
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
@@ -197,6 +228,14 @@ export class MemStorage implements IStorage {
 
   async getOrder(id: string): Promise<Order | undefined> {
     return this.orders.get(id);
+  }
+
+  async createShopifyCheckout(order: InsertOrder, cartItems: any[]): Promise<{ checkoutUrl: string; checkoutId: string }> {
+    if (!hasShopifyCredentials()) {
+      throw new Error('Shopify credentials not configured');
+    }
+    
+    return await shopifyService.createCheckout(order, cartItems);
   }
 }
 

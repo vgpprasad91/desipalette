@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { useMutation } from "@tanstack/react-query";
-import { ArrowLeft, CreditCard, Lock, CheckCircle } from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ArrowLeft, CreditCard, Lock, CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,11 @@ export default function Checkout() {
   const { items, total, clearCart } = useCart();
   const { toast } = useToast();
 
+  // Check Shopify status
+  const { data: shopifyStatus } = useQuery({
+    queryKey: ['/api/shopify/status'],
+  });
+
   const {
     register,
     handleSubmit,
@@ -42,6 +47,51 @@ export default function Checkout() {
     resolver: zodResolver(checkoutSchema),
   });
 
+  // Shopify checkout mutation
+  const createShopifyCheckoutMutation = useMutation({
+    mutationFn: async (data: CheckoutFormData) => {
+      const customerInfo = {
+        email: data.customerEmail,
+        name: data.customerName,
+        phone: data.customerPhone,
+        address: data.shippingAddress,
+      };
+
+      const cartItems = items.map(item => ({
+        productId: item.product.id,
+        variantId: item.product.id, // Use product ID as variant ID for now
+        quantity: item.quantity,
+        title: item.product.name,
+        price: item.product.price,
+      }));
+
+      const response = await apiRequest("POST", "/api/shopify/checkout", {
+        customerInfo,
+        cartItems,
+      });
+      return response.json();
+    },
+    onSuccess: (result) => {
+      if (result.success && result.checkoutUrl) {
+        clearCart();
+        toast({
+          title: "Redirecting to Shopify Checkout",
+          description: "You'll be redirected to complete your purchase on Shopify.",
+        });
+        // Redirect to Shopify checkout
+        window.location.href = result.checkoutUrl;
+      }
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Shopify Checkout Failed",
+        description: error.message || "There was an error creating the checkout. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Regular order mutation for non-Shopify checkout
   const createOrderMutation = useMutation({
     mutationFn: async (data: CheckoutFormData) => {
       const orderData = {
@@ -137,7 +187,12 @@ export default function Checkout() {
   const finalTotal = subtotal + shipping + tax;
 
   const onSubmit = (data: CheckoutFormData) => {
-    createOrderMutation.mutate(data);
+    // Use Shopify checkout if enabled, otherwise use regular order
+    if (shopifyStatus?.shopifyEnabled) {
+      createShopifyCheckoutMutation.mutate(data);
+    } else {
+      createOrderMutation.mutate(data);
+    }
   };
 
   return (
@@ -152,6 +207,12 @@ export default function Checkout() {
             <div className="flex items-center text-sm text-gray-600">
               <Lock className="h-4 w-4 mr-2" />
               <span>256-bit SSL encrypted checkout</span>
+              {shopifyStatus?.shopifyEnabled && (
+                <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+                  <ExternalLink className="h-3 w-3 inline mr-1" />
+                  Shopify Powered
+                </span>
+              )}
             </div>
           </div>
           <Link href="/cart">

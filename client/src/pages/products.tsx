@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Filter, SortAsc } from "lucide-react";
+import { Filter, SortAsc, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -20,7 +20,7 @@ export default function Products() {
   const category = urlParams.get('category') || '';
   const search = urlParams.get('search') || '';
 
-  const { data: products = [], isLoading, error } = useQuery<Product[]>({
+  const { data: productsResponse, isLoading, error } = useQuery({
     queryKey: ["/api/products", { category, search }],
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -34,6 +34,11 @@ export default function Products() {
       return response.json();
     },
   });
+
+  // Extract products and metadata from response
+  const products = productsResponse?.products || [];
+  const shopifyEnabled = productsResponse?.shopifyEnabled || false;
+  const dataSource = productsResponse?.source || 'unknown';
 
   // Sort products
   const sortedProducts = [...products].sort((a, b) => {
@@ -78,9 +83,22 @@ export default function Products() {
             <h1 className="text-3xl font-bold text-primary mb-2" data-testid="text-products-title">
               {category ? `${category} Collection` : search ? `Search Results for "${search}"` : 'All Products'}
             </h1>
-            <p className="text-gray-600" data-testid="text-products-count">
-              {isLoading ? 'Loading...' : `${sortedProducts.length} products found`}
-            </p>
+            <div className="flex items-center text-sm text-gray-600">
+              <span data-testid="text-products-count">
+                {isLoading ? 'Loading...' : `${sortedProducts.length} products found`}
+              </span>
+              {shopifyEnabled && (
+                <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+                  <ExternalLink className="h-3 w-3 inline mr-1" />
+                  Shopify Powered
+                </span>
+              )}
+              {!shopifyEnabled && (
+                <span className="ml-4 bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                  Demo Mode
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             {/* Sort */}

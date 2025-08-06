@@ -1,6 +1,6 @@
 # Overview
 
-Desipalette is a modern e-commerce web application for cultural fashion and lifestyle products. Built as a full-stack application with React frontend and Express backend, it features product browsing, shopping cart functionality, and order management. The application showcases a curated collection of ethnic wear, contemporary fusion pieces, and cultural accessories with a focus on quality and heritage.
+Desipalette is a modern e-commerce web application for cultural fashion and lifestyle products. Built as a full-stack application with React frontend and Express backend, it features product browsing, shopping cart functionality, and order management. The application integrates with Shopify's Storefront API for headless commerce, allowing product management through Shopify while maintaining a custom frontend experience. When Shopify credentials aren't available, it gracefully falls back to mock data for development and testing.
 
 # User Preferences
 
@@ -19,9 +19,10 @@ Preferred communication style: Simple, everyday language.
 
 ## Backend Architecture
 - **Express.js** server with TypeScript for REST API endpoints
-- **In-memory storage** (MemStorage class) as the primary data layer with seeded product data
+- **Shopify Storefront API integration** via @shopify/storefront-api-client for headless commerce
+- **Intelligent fallback system** using in-memory storage with seeded product data when Shopify isn't available
 - **Drizzle ORM** configured for PostgreSQL with schema definitions but currently unused
-- RESTful API design with endpoints for products and orders
+- RESTful API design with endpoints for products, orders, and Shopify checkout
 - Middleware for request logging and error handling
 
 ## Data Storage Solutions
@@ -36,6 +37,7 @@ Preferred communication style: Simple, everyday language.
 - Guest checkout flow for simplified user experience
 
 ## External Dependencies
+- **@shopify/storefront-api-client** for Shopify integration and GraphQL queries
 - **Radix UI** primitives for accessible component foundations
 - **Lucide React** for consistent iconography
 - **class-variance-authority** and **clsx** for dynamic CSS class management
@@ -44,10 +46,12 @@ Preferred communication style: Simple, everyday language.
 - **Replit integration** tools for development environment support
 
 ## Key Features
-- Product catalog with categories, search, and filtering
+- **Shopify headless commerce integration** with automatic fallback to mock data
+- Product catalog with categories, search, and filtering (Shopify-powered when credentials available)
 - Shopping cart with persistent state management
 - Product detail views with image galleries and variant selection
-- Checkout process with form validation
+- **Dual checkout system**: Shopify checkout for live stores, internal checkout for development
 - Responsive design optimized for mobile and desktop
+- **Visual indicators** showing data source (Shopify vs Demo mode)
 - Toast notifications for user feedback
 - Modal dialogs for quick product views

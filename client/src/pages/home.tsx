@@ -11,11 +11,12 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { data: products, isLoading } = useQuery<Product[]>({
+  const { data: productsResponse, isLoading } = useQuery({
     queryKey: ["/api/products"],
   });
 
-  const featuredProducts = products?.slice(0, 6) || [];
+  const products = productsResponse?.products || [];
+  const featuredProducts = products.slice(0, 6);
 
   const handleQuickView = (product: Product) => {
     setSelectedProduct(product);
