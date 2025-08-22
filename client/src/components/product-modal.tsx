@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCart } from "@/contexts/cart-context";
 import { Product } from "@shared/schema";
+import { formatINR } from "@/lib/utils";
 
 interface ProductModalProps {
   product: Product | null;
@@ -73,9 +74,7 @@ export function ProductModal({ product, open, onClose }: ProductModalProps) {
           <div>
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h2 className="text-2xl font-bold text-primary mb-2" data-testid="text-modal-product-name">
-                  {product.name}
-                </h2>
+                <h2 className="text-2xl font-semibold font-serif mb-2 gold-shimmer" data-testid="text-modal-product-name">{product.name}</h2>
                 <p className="text-gray-600" data-testid="text-modal-product-category">
                   {product.subcategory || product.category}
                 </p>
@@ -87,12 +86,12 @@ export function ProductModal({ product, open, onClose }: ProductModalProps) {
 
             <div className="flex items-center space-x-4 mb-6">
               <div className="flex items-center space-x-2">
-                <span className="text-3xl font-bold text-primary" data-testid="text-modal-product-price">
-                  ${product.price}
+                <span className="text-xl font-medium text-foreground/90 tracking-wide" data-testid="text-modal-product-price">
+                  {formatINR(parseFloat(product.price))}
                 </span>
                 {isOnSale && (
-                  <span className="text-lg text-gray-400 line-through" data-testid="text-modal-product-original-price">
-                    ${product.originalPrice}
+                  <span className="text-sm text-muted-foreground line-through" data-testid="text-modal-product-original-price">
+                    {formatINR(parseFloat(product.originalPrice!))}
                   </span>
                 )}
               </div>
@@ -113,8 +112,22 @@ export function ProductModal({ product, open, onClose }: ProductModalProps) {
 
             <div className="mb-6">
               <h4 className="font-semibold mb-2">Description</h4>
-              <p className="text-gray-700" data-testid="text-modal-product-description">
+              <p className="text-muted-foreground leading-relaxed" data-testid="text-modal-product-description">
                 {product.description}
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                {(() => {
+                  const key = (product.category || '').toLowerCase();
+                  if (key.includes('saree') || key.includes('silk'))
+                    return 'Handloom silk with heritage zari work—each piece finished by seasoned karigars.';
+                  if (key.includes('jewel'))
+                    return 'Temple-inspired motifs with hand-set stones and antique patina detailing.';
+                  if (key.includes('kurta') || key.includes('tailor'))
+                    return 'Precision tailoring, soft interlinings, and calibrated ease for drape and movement.';
+                  if (key.includes('handicraft') || key.includes('home'))
+                    return 'Carved, cast, or woven by artisans—functional heirlooms for contemporary living.';
+                  return 'Crafted in limited batches by Indian ateliers, refined for modern wardrobes.';
+                })()}
               </p>
             </div>
 

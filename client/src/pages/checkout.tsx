@@ -13,6 +13,7 @@ import { z } from "zod";
 import { useCart } from "@/contexts/cart-context";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { formatINR } from "@/lib/utils";
 
 const checkoutSchema = z.object({
   customerEmail: z.string().email("Please enter a valid email address"),
@@ -99,7 +100,7 @@ export default function Checkout() {
         customerName: data.customerName,
         customerPhone: data.customerPhone,
         shippingAddress: data.shippingAddress,
-        totalAmount: (total + (total >= 100 ? 0 : 9.99) + (total * 0.08)).toString(),
+        totalAmount: (total + (total >= 999 ? 0 : 99) + (total * 0.18)).toFixed(0),
         items: JSON.stringify(items),
         status: "confirmed",
       };
@@ -182,8 +183,8 @@ export default function Checkout() {
   }
 
   const subtotal = total;
-  const shipping = total >= 100 ? 0 : 9.99;
-  const tax = total * 0.08;
+  const shipping = total >= 999 ? 0 : 99;
+  const tax = total * 0.18;
   const finalTotal = subtotal + shipping + tax;
 
   const onSubmit = (data: CheckoutFormData) => {
@@ -397,7 +398,7 @@ export default function Checkout() {
                           <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                           {item.size && <p className="text-xs text-gray-500">Size: {item.size}</p>}
                         </div>
-                        <p className="text-sm font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="text-sm font-medium">{formatINR(item.price * item.quantity)}</p>
                       </div>
                     ))}
                   </div>
@@ -405,22 +406,22 @@ export default function Checkout() {
                   <div className="border-t pt-4 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Subtotal</span>
-                      <span data-testid="text-checkout-subtotal">${subtotal.toFixed(2)}</span>
+                      <span data-testid="text-checkout-subtotal">{formatINR(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Shipping</span>
                       <span className={shipping === 0 ? "text-green-600" : ""} data-testid="text-checkout-shipping">
-                        {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                        {shipping === 0 ? 'Free' : formatINR(shipping)}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Tax</span>
-                      <span data-testid="text-checkout-tax">${tax.toFixed(2)}</span>
+                      <span data-testid="text-checkout-tax">{formatINR(tax)}</span>
                     </div>
                     <div className="border-t pt-2">
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span data-testid="text-checkout-total">${finalTotal.toFixed(2)}</span>
+                        <span data-testid="text-checkout-total">{formatINR(finalTotal)}</span>
                       </div>
                     </div>
                   </div>
@@ -431,7 +432,7 @@ export default function Checkout() {
                     disabled={createOrderMutation.isPending}
                     data-testid="button-place-order"
                   >
-                    {createOrderMutation.isPending ? 'Processing...' : `Place Order • $${finalTotal.toFixed(2)}`}
+                    {createOrderMutation.isPending ? 'Processing...' : `Place Order • ${formatINR(finalTotal)}`}
                   </Button>
 
                   <div className="text-center text-xs text-gray-500">

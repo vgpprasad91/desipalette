@@ -14,6 +14,8 @@ import Cart from "@/pages/cart";
 import Checkout from "@/pages/checkout";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
+import Collections from "@/pages/collections";
+import CollectionDetail from "@/pages/collection-detail";
 
 function Router() {
   return (
@@ -25,6 +27,8 @@ function Router() {
       <Route path="/checkout" component={Checkout} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/collections" component={Collections} />
+      <Route path="/collections/:slug" component={CollectionDetail} />
       <Route component={NotFound} />
     </Switch>
   );

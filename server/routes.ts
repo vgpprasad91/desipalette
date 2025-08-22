@@ -9,14 +9,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all products with optional filtering
   app.get("/api/products", async (req, res) => {
     try {
-      if (!hasShopifyCredentials()) {
-        return res.status(503).json({ 
-          message: "Shopify credentials not configured",
-          error: "Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables",
-          shopifyEnabled: false 
-        });
-      }
-
       const { category, search } = req.query;
       
       const products = await storage.getProducts(
@@ -26,13 +18,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({
         products,
-        shopifyEnabled: true,
-        source: 'shopify'
+        shopifyEnabled: hasShopifyCredentials(),
+        source: hasShopifyCredentials() ? 'shopify' : 'demo'
       });
     } catch (error) {
       console.error('Products fetch error:', error);
       res.status(500).json({ 
-        message: "Failed to fetch products from Shopify", 
+        message: "Failed to fetch products", 
         error: error.message,
         shopifyEnabled: hasShopifyCredentials()
       });
@@ -42,23 +34,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get single product
   app.get("/api/products/:id", async (req, res) => {
     try {
-      if (!hasShopifyCredentials()) {
-        return res.status(503).json({ 
-          message: "Shopify credentials not configured",
-          error: "Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables",
-          shopifyEnabled: false 
-        });
-      }
-
       const product = await storage.getProduct(req.params.id);
       if (!product) {
-        return res.status(404).json({ message: "Product not found in Shopify store" });
+        return res.status(404).json({ 
+          message: hasShopifyCredentials() ? "Product not found in Shopify store" : "Product not found" 
+        });
       }
       res.json(product);
     } catch (error) {
       console.error('Product fetch error:', error);
       res.status(500).json({ 
-        message: "Failed to fetch product from Shopify", 
+        message: "Failed to fetch product", 
         error: error.message,
         shopifyEnabled: hasShopifyCredentials()
       });

@@ -3,6 +3,7 @@ import { Trash2, Minus, Plus, ShoppingBag, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCart } from "@/contexts/cart-context";
+import { formatINR } from "@/lib/utils";
 
 export default function Cart() {
   const { items, total, updateQuantity, removeItem } = useCart();
@@ -113,7 +114,7 @@ export default function Cart() {
                         
                         <div className="flex items-center space-x-4">
                           <span className="text-lg font-bold text-primary" data-testid={`text-cart-item-total-${index}`}>
-                            ${(item.price * item.quantity).toFixed(2)}
+                            {formatINR(item.price * item.quantity)}
                           </span>
                           <Button 
                             variant="outline" 
@@ -142,31 +143,31 @@ export default function Cart() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
-                  <span data-testid="text-subtotal">${total.toFixed(2)}</span>
+                  <span data-testid="text-subtotal">{formatINR(total)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Shipping</span>
-                  <span className="text-green-600" data-testid="text-shipping">
-                    {total >= 100 ? 'Free' : '$9.99'}
+                  <span className={total >= 999 ? "text-green-600" : ""} data-testid="text-shipping">
+                    {total >= 999 ? 'Free' : formatINR(99)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Tax</span>
-                  <span data-testid="text-tax">${(total * 0.08).toFixed(2)}</span>
+                  <span data-testid="text-tax">{formatINR(total * 0.18)}</span>
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span data-testid="text-total">
-                      ${(total + (total >= 100 ? 0 : 9.99) + (total * 0.08)).toFixed(2)}
+                      {formatINR(total + (total >= 999 ? 0 : 99) + (total * 0.18))}
                     </span>
                   </div>
                 </div>
                 
-                {total < 100 && (
+                {total < 999 && (
                   <div className="bg-blue-50 p-3 rounded-lg">
                     <p className="text-sm text-blue-700" data-testid="text-free-shipping-notice">
-                      Add ${(100 - total).toFixed(2)} more to get free shipping!
+                      Add {formatINR(Math.ceil(999 - total))} more to get free shipping!
                     </p>
                   </div>
                 )}

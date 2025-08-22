@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import net from "net";
 
 const app = express();
 app.use(express.json());
@@ -56,16 +57,36 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
+  // Choose a port and handle EADDRINUSE gracefully in development.
+  // Default to PORT env or 3000; in development, fall back to next free port.
+  const preferredPort = Number.parseInt(process.env.PORT || "3000", 10);
+
+  async function findAvailablePort(startPort: number): Promise<number> {
+    // In production, always return the preferred port (platforms may require it)
+    if (app.get("env") !== "development") return startPort;
+
+    const maxAttempts = 20; // scan up to 20 ports max
+    for (let i = 0; i <= maxAttempts; i++) {
+      const portToTry = startPort + i;
+      const isFree = await new Promise<boolean>((resolve) => {
+        const tester = net.createServer()
+          .once("error", () => resolve(false))
+          .once("listening", () => {
+            tester.close(() => resolve(true));
+          })
+          .listen(portToTry, "0.0.0.0");
+      });
+      if (isFree) return portToTry;
+    }
+    return startPort; // fallback
+  }
+
+  const port = await findAvailablePort(preferredPort);
+  if (port !== preferredPort && app.get("env") === "development") {
+    log(`port ${preferredPort} busy, using ${port} instead`);
+  }
+
+  server.listen(port, "0.0.0.0", () => {
     log(`serving on port ${port}`);
   });
 })();

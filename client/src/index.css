@@ -1,52 +1,68 @@
+/* Luxury brand typography */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Prata&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(224, 71.4%, 4.1%);
-  --muted: hsl(220, 14.3%, 95.9%);
-  --muted-foreground: hsl(220, 8.9%, 46.1%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(224, 71.4%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(224, 71.4%, 4.1%);
-  --border: hsl(220, 13%, 91%);
-  --input: hsl(220, 13%, 91%);
-  --primary: hsl(220, 14.3%, 15.9%);
-  --primary-foreground: hsl(210, 20%, 98%);
-  --secondary: hsl(45, 93%, 47%);
-  --secondary-foreground: hsl(26, 83%, 14%);
-  --accent: hsl(324, 77%, 58%);
-  --accent-foreground: hsl(0, 0%, 100%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(224, 71.4%, 4.1%);
+  /* Maharaja Luxe — light theme */
+  --background: #F8F3EA; /* parchment ivory */
+  --foreground: #2B1B1B; /* rich brown-black */
+  --muted: #EFE3D3; /* warm khaki paper */
+  --muted-foreground: #6E5A48; /* aged bronze */
+
+  /* Surfaces */
+  --popover: #FFFFFF;
+  --popover-foreground: #2B1B1B;
+  --card: #FFFFFF;
+  --card-foreground: #2B1B1B;
+  --border: #E3D6C4; /* sand-gold line */
+  --input: #E3D6C4;
+
+  /* Brand colors */
+  --primary: #4A1F2A; /* deep maroon */
+  --primary-foreground: #FBF6E9; /* soft ivory */
+  --secondary: #6E3A6F; /* royal mulberry */
+  --secondary-foreground: #FBF6E9;
+  --accent: #D4AF37; /* true gold */
+  --accent-foreground: #2B1B1B;
+
+  /* Jewel tones (sparingly used) */
+  --emerald: #0A6E4B;
+  --sapphire: #0F4C81;
+  --ruby: #8C2F39;
+
+  /* Feedback */
+  --destructive: #8C2F39; /* ruby */
+  --destructive-foreground: #FBF6E9;
+  --ring: #D4AF37; /* gold ring focus */
   --radius: 0.5rem;
-  --neutral: hsl(220, 14.3%, 97.9%);
+  --neutral: #F3ECE1; /* soft canvas */
 }
 
 .dark {
-  --background: hsl(224, 71.4%, 4.1%);
-  --foreground: hsl(210, 20%, 98%);
-  --muted: hsl(215, 27.9%, 16.9%);
-  --muted-foreground: hsl(217.9, 10.6%, 64.9%);
-  --popover: hsl(224, 71.4%, 4.1%);
-  --popover-foreground: hsl(210, 20%, 98%);
-  --card: hsl(224, 71.4%, 4.1%);
-  --card-foreground: hsl(210, 20%, 98%);
-  --border: hsl(215, 27.9%, 16.9%);
-  --input: hsl(215, 27.9%, 16.9%);
-  --primary: hsl(210, 20%, 98%);
-  --primary-foreground: hsl(220, 14.3%, 15.9%);
-  --secondary: hsl(45, 93%, 47%);
-  --secondary-foreground: hsl(26, 83%, 14%);
-  --accent: hsl(324, 77%, 58%);
-  --accent-foreground: hsl(0, 0%, 100%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(210, 20%, 98%);
-  --ring: hsl(212.7, 26.8%, 83.9%);
-  --neutral: hsl(215, 27.9%, 16.9%);
+  /* Maharaja Luxe — dark theme */
+  --background: #140A0A; /* wine-black */
+  --foreground: #F4EDE1; /* ivory */
+  --muted: #1E1313; /* deep claret */
+  --muted-foreground: #CDBEA9; /* antique brass */
+  --popover: #1A0F0F;
+  --popover-foreground: #F4EDE1;
+  --card: #1A0F0F;
+  --card-foreground: #F4EDE1;
+  --border: #2A1719; /* wine edge */
+  --input: #2A1719;
+  --primary: #6B1D35; /* royal maroon */
+  --primary-foreground: #F4EDE1;
+  --secondary: #4F2A7A; /* court purple */
+  --secondary-foreground: #F4EDE1;
+  --accent: #E1C16E; /* brushed gold */
+  --accent-foreground: #140A0A;
+  --destructive: #8C2F39;
+  --destructive-foreground: #F4EDE1;
+  --ring: #E1C16E;
+  --neutral: #1A1211;
 }
 
 @layer base {
@@ -56,22 +72,739 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-image: radial-gradient(60% 40% at 50% 0%, rgba(212,175,55,0.08), transparent 60%);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Prata', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.02em;
+  }
+  p, li, small {
+    letter-spacing: 0.005em;
   }
 }
 
 @layer utilities {
+  /* Royal hero wrapper with soft ornaments */
+  .royal-hero {
+    position: relative;
+    overflow: hidden;
+    background-image:
+      radial-gradient(60% 40% at 50% 0%, rgba(212,175,55,0.10), transparent 60%),
+      radial-gradient(40% 30% at 85% 15%, rgba(110,58,111,0.10), transparent 60%),
+      radial-gradient(40% 30% at 15% 85%, rgba(106,76,58,0.10), transparent 60%);
+  }
+  .royal-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(248,243,234,0.0), rgba(248,243,234,0.6) 70%, rgba(248,243,234,1));
+  }
+
+  /* Mughal arch mask for sections/cards */
+  .mughal-arch {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    --arch-h: 48px;
+  }
+  .mughal-arch::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: var(--arch-h);
+    background:
+      radial-gradient(48px 48px at 50% 100%, var(--card) 98%, transparent 100%);
+    -webkit-mask: linear-gradient(#000, #000) top/100% 100% no-repeat,
+                   radial-gradient(48px 48px at 50% 100%, transparent 46px, #000 47px);
+    mask: linear-gradient(#000, #000) top/100% 100% no-repeat,
+          radial-gradient(48px 48px at 50% 100%, transparent 46px, #000 47px);
+    opacity: 0.85;
+  }
+
+  /* Royal card frame and shine */
+  .royal-card {
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(212,175,55,0.15);
+    position: relative;
+  }
+  .royal-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(212,175,55,0.12), transparent 45%, rgba(212,175,55,0.06) 50%, transparent 55%);
+    opacity: 0.6;
+  }
+
+  /* Floating gold particles for luxe ambience */
+  .gold-particles {
+    position: relative;
+  }
+  .gold-particles::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background-image: radial-gradient(circle at 20% 30%, rgba(212,175,55,0.12) 2px, transparent 3px),
+                      radial-gradient(circle at 70% 60%, rgba(212,175,55,0.10) 1.5px, transparent 2.5px),
+                      radial-gradient(circle at 40% 80%, rgba(212,175,55,0.10) 1.5px, transparent 2.5px);
+    background-size: 120px 120px, 160px 160px, 200px 200px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* Crest badge */
+  .crest-badge {
+    backdrop-filter: blur(6px);
+    background: linear-gradient(to bottom right, rgba(20,10,10,0.35), rgba(20,10,10,0.15));
+    border: 1px solid rgba(212,175,55,0.45);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+
+  /* Gilded button accent */
+  .gilded {
+    box-shadow: inset 0 0 0 1px rgba(212,175,55,0.45);
+    background-image: linear-gradient(to bottom right, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
+  }
+  /* Subtle gold text sheen for luxe headings */
+  .gold-shimmer {
+    background: linear-gradient(90deg, #B58E2F, #E0C76D 35%, #B58E2F 65%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Gold-foil effect for hero titles */
+  .gold-foil {
+    background: linear-gradient(135deg, #6B5614 0%, #8B6914 35%, #B8860B 52%, #8B6914 68%, #6B5614 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3), 0 2px 12px rgba(0,0,0,0.15);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Ornamental divider inspired by jaali motifs */
+  .ornate-divider {
+    height: 2px;
+    background-image: linear-gradient(to right, transparent, #D4AF37 15%, #B58E2F 50%, #D4AF37 85%, transparent);
+  }
+
+  /* Mughal arch divider */
+  .mughal-arch-divider {
+    position: relative;
+    height: 16px;
+    mask: radial-gradient(8px_8px at 8px 8px, black 98%, transparent 100%) repeat-x;
+    -webkit-mask: radial-gradient(8px_8px at 8px 8px, black 98%, transparent 100%) repeat-x;
+    background: linear-gradient(to right, #B58E2F, #E0C76D, #B58E2F);
+    background-size: 200px 100%;
+  }
+
+  /* Gold border utility for highlighted cards */
+  .golden-border {
+    box-shadow: 0 0 0 1px rgba(212,175,55,0.45) inset, 0 0 0 2px rgba(212,175,55,0.10) inset;
+  }
+
+  /* Gentle gold glow on hover for premium feel */
+  .gold-glow {
+    transition: box-shadow 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .gold-glow:hover {
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.18), 0 0 0 1px rgba(212,175,55,0.35) inset;
+  }
+
+  /* Hoverable gold border utility */
+  .hover-golden-border:hover {
+    box-shadow: 0 0 0 1px rgba(212,175,55,0.45) inset, 0 0 0 2px rgba(212,175,55,0.10) inset;
+  }
+
+  /* Embossed surface for subtle depth */
+  .embossed {
+    background: var(--card);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.06), 0 0 0 1px rgba(212,175,55,0.10);
+  }
+
+  /* Jaali-inspired subtle pattern background */
+  .jaali-pattern {
+    position: relative;
+    isolation: isolate;
+  }
+  .jaali-pattern::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 12px 12px, rgba(212,175,55,0.07) 2px, transparent 2.6px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  }
+
+  /* Long, graceful transitions */
+  .lux-transition {
+    transition-duration: 700ms !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  /* Jewel tone helpers */
+  .tone-emerald { color: var(--emerald); }
+  .tone-sapphire { color: var(--sapphire); }
+  .tone-ruby { color: var(--ruby); }
+  .bg-emerald-soft { background: radial-gradient(circle at 30% 20%, rgba(10,110,75,0.08), transparent 60%); }
+  .bg-sapphire-soft { background: radial-gradient(circle at 70% 30%, rgba(15,76,129,0.08), transparent 60%); }
+  .bg-ruby-soft { background: radial-gradient(circle at 50% 80%, rgba(140,47,57,0.08), transparent 60%); }
+
+  /* Footer motif: subtle jaali-esque dot grid with gold tint */
+  .footer-motif {
+    position: relative;
+  }
+  .footer-motif::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: 
+      radial-gradient(circle at 12px 12px, rgba(212,175,55,0.10) 2px, transparent 2.5px),
+      radial-gradient(circle at 50% 50%, transparent 40%, rgba(212,175,55,0.03) 41%, rgba(212,175,55,0.03) 45%, transparent 46%),
+      radial-gradient(circle at 50% 50%, transparent 60%, rgba(212,175,55,0.02) 61%, rgba(212,175,55,0.02) 65%, transparent 66%);
+    background-size: 24px 24px, 100px 100px, 100px 100px;
+    opacity: 0.45;
+  }
+  .footer-motif::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      linear-gradient(to top, rgba(20,10,10,0.6), transparent 40%),
+      linear-gradient(135deg, transparent 45%, rgba(212,175,55,0.05) 50%, transparent 55%);
+    background-size: 100% 100%, 20px 20px;
+  }
+
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.6s ease-in-out;
   }
   
   .animate-slide-in {
-    animation: slideIn 0.3s ease-out;
+    animation: slideIn 0.6s ease-out;
   }
+
+  .animate-fade-in-slow {
+    animation: fadeIn 1.2s ease-in-out;
+  }
+
+  /* Parallax container utility */
+  .parallax {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Opulent photo treatment: vignette + warmth */
+  .opulent-photo {
+    position: relative;
+    overflow: hidden;
+  }
+  .opulent-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(60% 60% at 50% 50%, transparent 50%, rgba(0,0,0,0.15) 100%),
+                linear-gradient(to top, rgba(212,175,55,0.06), transparent 40%);
+    transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0.9;
+  }
+  .opulent-photo:hover::after {
+    opacity: 1;
+  }
+
+  /* Embossed title accent */
+  .embossed-title {
+    text-shadow: 0 1px 0 rgba(255,255,255,0.35), 0 2px 10px rgba(0,0,0,0.18);
+  }
+
+  /* Palace Arch Dividers */
+  .arch-divider {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    margin: 2rem 0;
+    overflow: hidden;
+  }
+  
+  .arch-divider::before,
+  .arch-divider::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 60px;
+    background: transparent;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 60px 60px 0 0;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+  }
+  
+  .arch-divider::after {
+    width: 100px;
+    height: 50px;
+    border-width: 1px;
+    border-color: rgba(212, 175, 55, 0.5);
+  }
+  
+  .arch-divider-small {
+    height: 30px;
+  }
+  
+  .arch-divider-small::before,
+  .arch-divider-small::after {
+    width: 60px;
+    height: 30px;
+  }
+  
+  .arch-divider-small::after {
+    width: 50px;
+    height: 25px;
+  }
+
+  /* Mughal Arch Section Divider */
+  .mughal-arch-divider {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    margin: 0;
+  }
+  
+  .mughal-arch-divider::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: 
+      radial-gradient(ellipse 80px 40px at 10% 100%, transparent 98%, rgba(212, 175, 55, 0.2)),
+      radial-gradient(ellipse 80px 40px at 30% 100%, transparent 98%, rgba(212, 175, 55, 0.15)),
+      radial-gradient(ellipse 80px 40px at 50% 100%, transparent 98%, rgba(212, 175, 55, 0.2)),
+      radial-gradient(ellipse 80px 40px at 70% 100%, transparent 98%, rgba(212, 175, 55, 0.15)),
+      radial-gradient(ellipse 80px 40px at 90% 100%, transparent 98%, rgba(212, 175, 55, 0.2));
+    background-size: 20% 100%;
+    background-repeat: repeat-x;
+  }
+
+  /* Metallic Gold Gradient */
+  .gold-metallic {
+    background: linear-gradient(
+      135deg,
+      #D4AF37 0%,
+      #F4E5C2 20%,
+      #D4AF37 40%,
+      #AA8A44 60%,
+      #F4E5C2 80%,
+      #D4AF37 100%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Velvet Maroon Gradient */
+  .velvet-maroon {
+    background: radial-gradient(ellipse at top, #8C2F39 0%, #4A1F2A 50%, #2D0F15 100%);
+    box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.1), inset 0 -2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Decorative Drop Caps */
+  .drop-cap::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-size: 4.5rem;
+    line-height: 3.5rem;
+    padding-right: 0.5rem;
+    margin-top: 0.2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #D4AF37 0%, #F4E5C2 50%, #AA8A44 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Royal Filigree Border */
+  .filigree-border {
+    position: relative;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    overflow: hidden;
+  }
+  
+  .filigree-border::before,
+  .filigree-border::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    transform: rotate(45deg);
+  }
+  
+  .filigree-border::before {
+    top: -20px;
+    left: -20px;
+  }
+  
+  .filigree-border::after {
+    bottom: -20px;
+    right: -20px;
+  }
+
+  /* Enhanced Gold Foil Text Effect */
+  .gold-foil-enhanced {
+    background: linear-gradient(
+      -45deg,
+      #4A3C0A 0%,
+      #8B6914 10%,
+      #D4AF37 20%,
+      #FFF8DC 30%,
+      #F4E5C2 40%,
+      #D4AF37 50%,
+      #8B6914 60%,
+      #B8860B 70%,
+      #FFE5B4 80%,
+      #8B6914 90%,
+      #4A3C0A 100%
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: metallic-shine 4s ease-in-out infinite;
+    text-shadow: 
+      1px 1px 1px rgba(0, 0, 0, 0.1),
+      2px 2px 3px rgba(0, 0, 0, 0.05);
+    filter: 
+      drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))
+      drop-shadow(0 2px 3px rgba(212, 175, 55, 0.2));
+  }
+  
+  @keyframes metallic-shine {
+    0%, 100% { 
+      background-position: 0% 50%;
+      filter: 
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))
+        drop-shadow(0 2px 3px rgba(212, 175, 55, 0.2))
+        brightness(1);
+    }
+    25% { 
+      background-position: 50% 0%;
+      filter: 
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))
+        drop-shadow(0 2px 3px rgba(212, 175, 55, 0.2))
+        brightness(1.1);
+    }
+    50% { 
+      background-position: 100% 50%;
+      filter: 
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))
+        drop-shadow(0 2px 3px rgba(212, 175, 55, 0.2))
+        brightness(1.2);
+    }
+    75% { 
+      background-position: 50% 100%;
+      filter: 
+        drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3))
+        drop-shadow(0 2px 3px rgba(212, 175, 55, 0.2))
+        brightness(1.1);
+    }
+  }
+  
+  @keyframes shine {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* Gold Text for Light Backgrounds */
+  .gold-text-light {
+    color: #8B6914;
+    font-weight: 600;
+    text-shadow: 
+      0 1px 2px rgba(139, 105, 20, 0.2),
+      0 2px 4px rgba(139, 105, 20, 0.1);
+    position: relative;
+  }
+  
+  .gold-text-light::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    background: linear-gradient(
+      45deg,
+      #D4AF37 0%,
+      #F4E5C2 50%,
+      #D4AF37 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: blur(8px);
+    opacity: 0.3;
+  }
+
+  /* Subtle Mandala Background Pattern */
+  .mandala-bg {
+    position: relative;
+  }
+  
+  .mandala-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+
+  /* Rich Shadow Effects */
+  .royal-shadow {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.1),
+      0 16px 32px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Gradient Overlay Mixin */
+  .gradient-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .gradient-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(212, 175, 55, 0.1) 0%,
+      transparent 50%,
+      rgba(212, 175, 55, 0.05) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Mughal Floral Pattern for Maroon Sections */
+  .mughal-pattern {
+    position: relative;
+  }
+  
+  .mughal-pattern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: 
+      radial-gradient(circle at 20% 30%, transparent 20%, rgba(212, 175, 55, 0.1) 20.5%, rgba(212, 175, 55, 0.1) 25%, transparent 25.5%),
+      radial-gradient(circle at 20% 30%, transparent 30%, rgba(212, 175, 55, 0.05) 30.5%, rgba(212, 175, 55, 0.05) 35%, transparent 35.5%),
+      radial-gradient(circle at 60% 60%, transparent 20%, rgba(212, 175, 55, 0.1) 20.5%, rgba(212, 175, 55, 0.1) 25%, transparent 25.5%),
+      radial-gradient(circle at 60% 60%, transparent 30%, rgba(212, 175, 55, 0.05) 30.5%, rgba(212, 175, 55, 0.05) 35%, transparent 35.5%),
+      radial-gradient(circle at 80% 20%, transparent 15%, rgba(212, 175, 55, 0.08) 15.5%, rgba(212, 175, 55, 0.08) 20%, transparent 20.5%),
+      radial-gradient(circle at 40% 80%, transparent 15%, rgba(212, 175, 55, 0.08) 15.5%, rgba(212, 175, 55, 0.08) 20%, transparent 20.5%);
+    background-size: 200px 200px, 200px 200px, 250px 250px, 250px 250px, 150px 150px, 150px 150px;
+    background-position: 0 0, 0 0, 100px 100px, 100px 100px, 50px 50px, 150px 150px;
+    pointer-events: none;
+  }
+
+  /* Temple Motif Pattern */
+  .temple-pattern {
+    position: relative;
+  }
+  
+  .temple-pattern::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: 
+      linear-gradient(45deg, transparent 48%, rgba(212, 175, 55, 0.1) 49%, rgba(212, 175, 55, 0.1) 51%, transparent 52%),
+      linear-gradient(-45deg, transparent 48%, rgba(212, 175, 55, 0.1) 49%, rgba(212, 175, 55, 0.1) 51%, transparent 52%),
+      radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 10%, transparent 10.5%);
+    background-size: 40px 40px, 40px 40px, 40px 40px;
+    background-position: 0 0, 0 0, 20px 20px;
+    pointer-events: none;
+  }
+
+  /* Gold Ornamental Border */
+  .gold-border-top {
+    position: relative;
+    padding-top: 2rem;
+  }
+  
+  .gold-border-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #D4AF37 10%,
+      #8B6914 30%,
+      #D4AF37 50%,
+      #8B6914 70%,
+      #D4AF37 90%,
+      transparent
+    );
+    box-shadow: 
+      0 1px 3px rgba(212, 175, 55, 0.3),
+      0 -1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .gold-border-bottom {
+    position: relative;
+    padding-bottom: 2rem;
+  }
+  
+  .gold-border-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #D4AF37 10%,
+      #8B6914 30%,
+      #D4AF37 50%,
+      #8B6914 70%,
+      #D4AF37 90%,
+      transparent
+    );
+    box-shadow: 
+      0 -1px 3px rgba(212, 175, 55, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Smooth scroll animation */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  
+  /* Magnetic hover effect */
+  .magnetic-hover {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .magnetic-hover:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Shimmer effect for loading states */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.2) 80%,
+      transparent 100%
+    );
+    animation: shimmer-animation 2s infinite;
+  }
+  
+  @keyframes shimmer-animation {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  /* Pulse animation for CTAs */
+  .pulse-gold {
+    position: relative;
+  }
+  
+  .pulse-gold::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    background: rgba(212, 175, 55, 0.3);
+    animation: pulse-animation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-animation {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+  }
+  
+  /* Reveal animation for scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Stagger children animation */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .stagger-children.active > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .stagger-children.active > *:nth-child(1) { transition-delay: 0.1s; }
+  .stagger-children.active > *:nth-child(2) { transition-delay: 0.2s; }
+  .stagger-children.active > *:nth-child(3) { transition-delay: 0.3s; }
+  .stagger-children.active > *:nth-child(4) { transition-delay: 0.4s; }
+  .stagger-children.active > *:nth-child(5) { transition-delay: 0.5s; }
 }
 
 @keyframes fadeIn {

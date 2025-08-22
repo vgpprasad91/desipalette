@@ -144,7 +144,23 @@ export class MemStorage implements IStorage {
 
   async getProducts(category?: string, search?: string): Promise<Product[]> {
     if (!hasShopifyCredentials()) {
-      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
+      // Return demo products when Shopify is not configured
+      let products = Array.from(this.products.values());
+      
+      if (category) {
+        products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
+      }
+      
+      if (search) {
+        const searchLower = search.toLowerCase();
+        products = products.filter(p => 
+          p.name.toLowerCase().includes(searchLower) ||
+          p.description?.toLowerCase().includes(searchLower) ||
+          p.category.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      return products;
     }
     
     return await shopifyService.getProducts(category, search);
@@ -152,7 +168,8 @@ export class MemStorage implements IStorage {
 
   async getProduct(id: string): Promise<Product | undefined> {
     if (!hasShopifyCredentials()) {
-      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
+      // Return demo product when Shopify is not configured
+      return this.products.get(id);
     }
     
     return await shopifyService.getProduct(id);
@@ -160,7 +177,10 @@ export class MemStorage implements IStorage {
 
   async getProductsByCategory(category: string): Promise<Product[]> {
     if (!hasShopifyCredentials()) {
-      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
+      // Return demo products when Shopify is not configured
+      return Array.from(this.products.values()).filter(p => 
+        p.category.toLowerCase() === category.toLowerCase()
+      );
     }
     
     return await shopifyService.getProductsByCategory(category);
@@ -168,7 +188,13 @@ export class MemStorage implements IStorage {
 
   async searchProducts(query: string): Promise<Product[]> {
     if (!hasShopifyCredentials()) {
-      throw new Error('Shopify credentials are required. Please configure SHOPIFY_STORE_URL and SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variables.');
+      // Return demo products when Shopify is not configured
+      const searchLower = query.toLowerCase();
+      return Array.from(this.products.values()).filter(p => 
+        p.name.toLowerCase().includes(searchLower) ||
+        p.description?.toLowerCase().includes(searchLower) ||
+        p.category.toLowerCase().includes(searchLower)
+      );
     }
     
     return await shopifyService.searchProducts(query);

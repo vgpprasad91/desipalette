@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ProductCard } from "@/components/product-card";
+import { motion } from "framer-motion";
 import { ProductModal } from "@/components/product-modal";
 import { Product } from "@shared/schema";
 
@@ -37,10 +38,12 @@ export default function Products() {
 
   // Extract products and metadata from response
   const products = productsResponse?.products || [];
+  // Curate out casual items that clash with the royal narrative
+  const curatedProducts: Product[] = products.filter((p: Product) => !/t-?shirt|tee|headphone|earbud|dress/i.test(p.name) && !/headphone|electronics/i.test(p.category || ""));
   const shopifyEnabled = productsResponse?.shopifyEnabled;
 
   // Sort products
-  const sortedProducts = [...products].sort((a, b) => {
+  const sortedProducts = [...curatedProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return parseFloat(a.price) - parseFloat(b.price);
@@ -88,14 +91,14 @@ export default function Products() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-primary mb-2" data-testid="text-products-title">
+            <h1 className="text-3xl font-semibold text-foreground mb-2 font-serif gold-foil embossed-title" data-testid="text-products-title">
               {category ? `${category} Collection` : search ? `Search Results for "${search}"` : 'All Products'}
             </h1>
-            <div className="flex items-center text-sm text-gray-600">
+            <div className="flex items-center text-sm text-muted-foreground">
               <span data-testid="text-products-count">
                 {isLoading ? 'Loading...' : `${sortedProducts.length} products found`}
               </span>
-              <span className="ml-4 bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+              <span className="ml-4 bg-white text-muted-foreground px-2 py-1 rounded text-xs font-medium border border-border">
                 <ExternalLink className="h-3 w-3 inline mr-1" />
                 Shopify Powered
               </span>
@@ -153,8 +156,8 @@ export default function Products() {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar Filters - Desktop */}
           <div className="hidden lg:block">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="font-semibold mb-4">Filter by Category</h3>
+            <div className="bg-card p-6 rounded-xl border border-border">
+              <h3 className="font-medium mb-4">Filter by Category</h3>
               <div className="space-y-2">
                 <Button
                   variant={!category ? "default" : "outline"}
@@ -184,12 +187,12 @@ export default function Products() {
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(9)].map((_, i) => (
-                  <div key={i} className="bg-white rounded-xl shadow-md overflow-hidden animate-pulse" data-testid={`skeleton-product-${i}`}>
-                    <div className="w-full h-64 bg-gray-300"></div>
+                  <div key={i} className="bg-card rounded-xl border border-border overflow-hidden animate-pulse" data-testid={`skeleton-product-${i}`}>
+                    <div className="w-full h-64 bg-muted"></div>
                     <div className="p-4 space-y-2">
-                      <div className="h-4 bg-gray-300 rounded"></div>
-                      <div className="h-3 bg-gray-300 rounded w-2/3"></div>
-                      <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                      <div className="h-4 bg-muted rounded"></div>
+                      <div className="h-3 bg-muted rounded w-2/3"></div>
+                      <div className="h-4 bg-muted rounded w-1/3"></div>
                     </div>
                   </div>
                 ))}
@@ -205,15 +208,18 @@ export default function Products() {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                initial="hidden"
+                animate="show"
+                variants={{ hidden: { opacity: 1 }, show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } } }}
+              >
                 {sortedProducts.map(product => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onQuickView={handleQuickView}
-                  />
+                  <motion.div key={product.id} variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}>
+                    <ProductCard product={product} onQuickView={handleQuickView} />
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
